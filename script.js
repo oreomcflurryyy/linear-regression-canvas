@@ -5,23 +5,22 @@ const samples = [];
 // Function to handle mouse clicks on the canvas
 canvas.addEventListener('click', (event) => {
     const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left; // Correctly calculate x
-    const y = event.clientY - rect.top;  // Correctly calculate y
-
-    // Store the sample point
+    const x = event.clientX - rect.left; 
+    const y = event.clientY - rect.top;  
+    
     samples.push({ x, y: canvas.height - y });
 
-    // Draw the circle on the canvas
+    // Draw a circle
     ctx.fillStyle = 'red';
-    ctx.beginPath(); // Start a new path
-    ctx.arc(x, y, 5, 0, Math.PI * 2); // Draw a circle with radius 5
-    ctx.fill(); // Fill the circle
+    ctx.beginPath(); 
+    ctx.arc(x, y, 5, 0, Math.PI * 2); 
+    ctx.fill(); 
 });
 
-// Function to confirm samples and fit the regression line
+// Function to confirm samples 
 document.getElementById('confirm').addEventListener('click', () => {
     if (samples.length > 0) {
-        downloadCSV(samples); // Call the function to download CSV
+        downloadCSV(samples); 
     } else {
         alert('Please click on the canvas to create samples first.');
     }
@@ -29,23 +28,21 @@ document.getElementById('confirm').addEventListener('click', () => {
 
 // Function to refresh the page
 document.getElementById('refresh').addEventListener('click', () => {
-    location.reload(); // Refresh the page
+    location.reload(); 
 });
 
 // Function to download the samples as a CSV file
 function downloadCSV(samples) {
     const csvContent = "data:text/csv;charset=utf-8," 
-        + "X,Y\n" // Header
-        + samples.map(sample => `${sample.x},${sample.y}`).join("\n"); // Data rows
+        + "X,Y\n" 
+        + samples.map(sample => `${sample.x},${sample.y}`).join("\n"); 
 
-    // Create a link element
+    // Create a link element and trigger download
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
     link.setAttribute("download", "samples.csv");
-
-    // Append to the body and trigger the download
     document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link); // Clean up
+    document.body.removeChild(link); 
 }
